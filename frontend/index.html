@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChessQuest — Enchanted Garden Chess</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Ambient garden background -->
+    <div class="garden-bg" aria-hidden="true">
+      <div class="glow glow-a"></div>
+      <div class="glow glow-b"></div>
+      <div id="firefly-layer" class="firefly-layer"></div>
+    </div>
+
+    <!-- Victory petals + transient messages -->
+    <div id="petal-layer" class="petal-layer" aria-hidden="true"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- ============================ Home ============================ -->
+    <section id="screen-home" class="screen">
+      <div class="home-card">
+        <h1 class="logo">Chess<span>Quest</span></h1>
+        <p class="tagline">An enchanted-garden chess adventure</p>
+        <div class="home-actions">
+          <button id="btn-play-friend" class="btn btn-primary">
+            🌿 Play With a Friend
+          </button>
+          <button id="btn-play-computer" class="btn btn-secondary">
+            🍄 Play vs Computer
+          </button>
+          <button id="btn-how" class="btn btn-ghost">How to Play</button>
+        </div>
+        <div id="how-to-play" class="how-to-play">
+          <ul>
+            <li>Click one of your pieces to see where it can go.</li>
+            <li>Glowing dots are moves; rings mark captures.</li>
+            <li>Click a highlighted square to move there.</li>
+            <li>Play a friend on this device, or challenge the computer.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= Difficulty ========================= -->
+    <section id="screen-difficulty" class="screen">
+      <div class="difficulty-wrap">
+        <h2 class="screen-title">Choose your opponent</h2>
+        <div class="difficulty-grid">
+          <button class="difficulty-card" data-difficulty="beginner">
+            <span class="diff-emoji">🌱</span>
+            <span class="diff-name">Beginner</span>
+            <span class="diff-desc">Plays quick, friendly moves. Perfect for learning.</span>
+            <span class="diff-meter"><i></i></span>
+          </button>
+          <button class="difficulty-card" data-difficulty="thinker">
+            <span class="diff-emoji">🦋</span>
+            <span class="diff-name">Thinker</span>
+            <span class="diff-desc">Looks a few moves ahead and punishes blunders.</span>
+            <span class="diff-meter"><i></i><i></i></span>
+          </button>
+          <button class="difficulty-card" data-difficulty="master">
+            <span class="diff-emoji">🌟</span>
+            <span class="diff-name">Master</span>
+            <span class="diff-desc">Searches deep with sharp, calculated play.</span>
+            <span class="diff-meter"><i></i><i></i><i></i></span>
+          </button>
+        </div>
+        <button id="btn-difficulty-back" class="btn btn-ghost">← Back</button>
+      </div>
+    </section>
+
+    <!-- =========================== Game ============================ -->
+    <section id="screen-game" class="screen">
+      <div class="game-layout">
+        <div class="board-area">
+          <div class="board-frame">
+            <div id="board" class="board"></div>
+            <div id="thinking-indicator" class="thinking">
+              <span class="thinking-dot"></span>
+              <span class="thinking-dot"></span>
+              <span class="thinking-dot"></span>
+              <em>thinking…</em>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-block turn-block">
+            <span id="turn-dot" class="turn-dot white"></span>
+            <span id="turn-label">White to move</span>
+          </div>
+          <div id="opponent-info" class="panel-sub">Local two-player</div>
+
+          <div class="panel-block captured-block">
+            <div class="captured-row">
+              <span class="captured-label">You take</span>
+              <div id="captured-by-white" class="captured-tray"></div>
+            </div>
+            <div class="captured-row">
+              <span class="captured-label">They take</span>
+              <div id="captured-by-black" class="captured-tray"></div>
+            </div>
+          </div>
+
+          <div class="panel-block history-block">
+            <h3>Moves</h3>
+            <div class="history-scroll">
+              <ol id="move-history"></ol>
+            </div>
+          </div>
+
+          <div class="panel-block controls">
+            <button id="btn-undo" class="btn btn-small">↩ Undo</button>
+            <button id="btn-newgame" class="btn btn-small">↻ New Game</button>
+            <button id="btn-sound" class="btn btn-icon" aria-label="Mute sounds">🔊</button>
+            <button id="btn-menu" class="btn btn-small">☰ Menu</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ========================= End overlay ======================= -->
+    <div id="overlay-end" class="overlay-end">
+      <div class="end-card">
+        <h2 id="end-title">Checkmate!</h2>
+        <p id="end-detail"></p>
+        <div class="end-actions">
+          <button id="btn-play-again" class="btn btn-primary">Play Again</button>
+          <button id="btn-main-menu" class="btn btn-ghost">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/game.js"></script>
+  </body>
+</html>
