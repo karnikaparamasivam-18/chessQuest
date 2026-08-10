@@ -6,6 +6,11 @@ three difficulty levels. The chess engine is written from scratch in Python and
 exposed through a small FastAPI backend; the frontend is plain HTML, CSS, and
 JavaScript.
 
+## Live Demo
+
+**[Play ChessQuest](https://chessquest.onrender.com)**
+
+
 ## Features
 
 - **Local two-player** on one device, and **Player vs Computer** at three levels.
