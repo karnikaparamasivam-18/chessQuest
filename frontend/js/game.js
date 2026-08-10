@@ -21,6 +21,7 @@ const ui = {
   difficulty: null,
   humanColor: "white",
   bottomColor: "white",
+  chosenColor: "white", // selection on the difficulty screen (white/black/random)
   selected: null,
   legalTargets: new Map(), // square name -> move object
   busy: false,
@@ -376,15 +377,35 @@ function showToast(message) {
 async function startGame(mode, difficulty) {
   ui.mode = mode;
   ui.difficulty = difficulty;
-  ui.humanColor = "white";
-  ui.bottomColor = "white";
+
+  // Local games are always shown from White's side; against the computer the
+  // player picks a side (Random resolves to White or Black here).
+  let humanColor = "white";
+  if (mode === "computer") {
+    humanColor =
+      ui.chosenColor === "random"
+        ? Math.random() < 0.5
+          ? "white"
+          : "black"
+        : ui.chosenColor;
+  }
+  ui.humanColor = humanColor;
+  ui.bottomColor = humanColor;
   setEndOverlay(false);
+
   try {
-    const state = await api.createGame(mode, difficulty, ui.humanColor);
+    const state = await api.createGame(mode, difficulty, humanColor);
     ui.gameId = state.game_id;
     buildBoard();
     applyState(state);
     showScreen("screen-game");
+    // If the human chose Black, the computer (White) opens the game.
+    if (state.is_ai_turn) {
+      ui.busy = true;
+      await runAiTurn();
+      ui.busy = false;
+      renderPanel();
+    }
   } catch (err) {
     showToast(err.message);
   }
@@ -459,6 +480,14 @@ function wireEvents() {
   });
   document.getElementById("btn-difficulty-back").addEventListener("click", () => {
     showScreen("screen-home");
+  });
+  document.querySelectorAll(".color-opt").forEach((opt) => {
+    opt.addEventListener("click", () => {
+      ui.chosenColor = opt.dataset.color;
+      document
+        .querySelectorAll(".color-opt")
+        .forEach((o) => o.classList.toggle("selected", o === opt));
+    });
   });
   document.querySelectorAll(".difficulty-card").forEach((card) => {
     card.addEventListener("click", () => {
