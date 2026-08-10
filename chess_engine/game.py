@@ -38,11 +38,14 @@ class IllegalMoveError(Exception):
 class Game:
     """A single chess game and its full history."""
 
-    def __init__(self, game_mode="local", ai_difficulty=None):
+    def __init__(self, game_mode="local", ai_difficulty=None, human_color=WHITE):
         self.board = Board()
         self.turn = WHITE
         self.game_mode = game_mode
         self.ai_difficulty = ai_difficulty
+        # In computer mode the human plays one colour and the AI the other.
+        self.human_color = human_color
+        self.ai_color = opponent(human_color) if game_mode == "computer" else None
         self.status = ONGOING
         self.winner = None
         # Stack of (move, undo_record) so moves can be reversed in order.
@@ -123,8 +126,16 @@ class Game:
 
     def restart(self):
         """Reset to the initial position, keeping mode and difficulty."""
-        mode, difficulty = self.game_mode, self.ai_difficulty
-        self.__init__(game_mode=mode, ai_difficulty=difficulty)
+        mode, difficulty, human = self.game_mode, self.ai_difficulty, self.human_color
+        self.__init__(game_mode=mode, ai_difficulty=difficulty, human_color=human)
+
+    def is_ai_turn(self):
+        """True if it is the computer opponent's turn to move."""
+        return (
+            self.game_mode == "computer"
+            and not self.is_over()
+            and self.turn == self.ai_color
+        )
 
     # ---------------------------------------------------------- status logic
     def is_over(self):
