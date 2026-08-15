@@ -255,6 +255,10 @@ function selectSquare(name) {
   ui.legalTargets = new Map();
   ui.state.legal_moves
     .filter((m) => m.from === name)
+    // A promoting pawn yields four moves to the same square (queen/rook/
+    // bishop/knight). Keep the queen so the UI auto-queens, and drop the
+    // others so they don't overwrite it in this by-destination map.
+    .filter((m) => !m.promotion || m.promotion === "queen")
     .forEach((m) => ui.legalTargets.set(m.to, m));
 
   squareElement(name)?.classList.add("selected");
